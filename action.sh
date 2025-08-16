@@ -9,9 +9,11 @@ fi
 # create temp folder
 mkdir "${TMP}"
 
-# check last update
+# init
 OUT=${MODDIR}/system/etc/hosts
-rm "${OUT}"
+echo "## $(date '+%Y-%m-%d') ##">"${OUT}" &2>>"${TMP}/log"
+wait
+chmod 777 "${OUT}"
 wait
 
 # load list
@@ -25,10 +27,6 @@ fi
 
 echo "src: ${SRC}"
 echo "src: ${SRC}">>"${TMP}/log"
-
-# init
-echo "## $(date '+%Y-%m-%d') ##">>"${OUT}" &2>>"${TMP}/log"
-chmod 777 "${OUT}"
 
 echo "#=-> ------------ defaults ------------ <-=#">>"${OUT}"
 
