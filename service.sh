@@ -1,5 +1,4 @@
 #!/system/bin/sh
-
 MODDIR=${0%/*}
 
 # if temp folder exists - delete
@@ -8,7 +7,7 @@ if [[ -d "${TMP}" ]]; then
   rm -rf "${TMP}"
 fi
 # wait system to load
-sleep 9
+sleep 5
 
 # check last update
 OUT=${MODDIR}/system/etc/hosts
@@ -17,12 +16,12 @@ LST=""
 if [[ -f "${OUT}" ]]; then
   LST=$(head -n 1 ${OUT})
 fi
-if [[ "${LST}" == "${NOW}" ]] then
+if [[ "${LST}" == "${NOW}" ]]; then
   return 0
 fi
 
 # wait connection
-sleep 30
+sleep 25
 
 # create temp folder
 mkdir "${TMP}"
@@ -30,15 +29,15 @@ mkdir "${TMP}"
 echo "start: ${NOW} vs ${LST}">>"${TMP}/log"
 
 # load list
-SRC=${MODDIR}/ad-block.txt
-if [ -f "/Internal Storage/ad-block.txt" ]; then
+SRC="${MODDIR}/ad-block.txt"
+if [[ -f "/Internal Storage/ad-block.txt" ]]; then
   SRC="/Internal Storage/ad-block.txt"
 fi
-if [ -f "/storage/emulated/0/ad-block.txt" ]; then
+if [[ -f "/storage/emulated/0/ad-block.txt" ]]; then
   SRC="/storage/emulated/0/ad-block.txt"
 fi
 
-echo "src = ${SRC}">>"${TMP}/log"
+echo "src: ${SRC}">>"${TMP}/log"
 
 # belete old
 rm "${OUT}" &2>>"${TMP}/log"
@@ -46,7 +45,6 @@ wait
 
 # init new
 echo ${NOW} > "${OUT}" &2>>"${TMP}/log"
-chmod 777 "${OUT}"
 
 echo "#=-> -------------------------------------- <-=#">>"${OUT}"
 
@@ -70,7 +68,7 @@ echo "">>"${OUT}"
 
 CNT=1
 while read ENTRY; do
-  echo "${CNT}: ${ENTRY}">>"${TMP}/log"
+  echo "- ${CNT}: ${ENTRY}">>"${TMP}/log"
   
   echo \#=-\> ${ENTRY} \<-=\#>>"${OUT}"
   
@@ -79,18 +77,14 @@ while read ENTRY; do
   
   sed 's/127.0.0.1/0.0.0.0/' "${TMP}/${CNT}" | grep '^0.' | grep -v '^0.0.0.0 0.0.0.0$'>>"${OUT}" &2>>"${TMP}/log"
   wait
-  sleep 1
-  # echo "">>"${OUT}"
-  
+
+  sleep 1  
   ((CNT=CNT+1))
 done < "${SRC}"
 
 chmod 777 "${OUT}"
 
-echo "cnt = ${CNT}">>"${TMP}/log"
-
-# cat "${TMP}/*.txt">>"${OUT}" &2>>"${TMP}/log"
-# wait
+echo "cnt: ${CNT}">>"${TMP}/log"
 
 cat "${OUT}" > /system/etc/hosts &2>>"${TMP}/log"
 
