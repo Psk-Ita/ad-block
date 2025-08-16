@@ -1,1 +1,4 @@
-#MAGISK
+MODDIR=${0%/*}
+
+chmod 777 ${MODDIR}/system/etc/hosts
+chmod 777 ${MODDIR}/service.sh
