@@ -10,6 +10,8 @@ if [[ -f "${MODPATH}/service.sh" ]]; then
   chmod +x "${MODPATH}/service.sh"
   echo " - service grants: ok "
 fi
-echo ""
-echo " Enjoy! "
-echo ""
+if [[ -f "${MODPATH}/action.sh" ]]; then
+  chmod +x "${MODPATH}/action.sh"
+  echo " - action grants: ok "
+fi
+"${MODPATH}/action.sh"
