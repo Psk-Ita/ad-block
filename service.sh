@@ -39,14 +39,14 @@ fi
 
 echo "src: ${SRC}">>"${TMP}/log"
 
-# belete old
-rm "${OUT}" &2>>"${TMP}/log"
+rm "${OUT}"
 wait
 
-# init new
-echo ${NOW} > "${OUT}" &2>>"${TMP}/log"
+# init
+echo ${NOW}>>"${OUT}" &2>>"${TMP}/log"
+chmod 777 "${OUT}"
 
-echo "#=-> -------------------------------------- <-=#">>"${OUT}"
+echo "#=-> ------------ defaults ------------ <-=#">>"${OUT}"
 
 echo "::1 localhost">>"${OUT}"
 echo "::1 ip6-loopback">>"${OUT}"
@@ -66,8 +66,9 @@ echo "ff00::0 ip6-mcastprefix">>"${OUT}"
 echo "255.255.255.255 broadcasthost">>"${OUT}"
 echo "">>"${OUT}"
 
-CNT=1
 while read ENTRY; do
+  CNT=${RANDOM}
+  
   echo "- ${CNT}: ${ENTRY}">>"${TMP}/log"
   
   echo \#=-\> ${ENTRY} \<-=\#>>"${OUT}"
@@ -78,13 +79,10 @@ while read ENTRY; do
   sed 's/127.0.0.1/0.0.0.0/' "${TMP}/${CNT}" | grep '^0.' | grep -v '^0.0.0.0 0.0.0.0$'>>"${OUT}" &2>>"${TMP}/log"
   wait
 
-  sleep 1  
-  ((CNT=CNT+1))
+  sleep 1
 done < "${SRC}"
 
 chmod 777 "${OUT}"
-
-echo "cnt: ${CNT}">>"${TMP}/log"
 
 cat "${OUT}" > /system/etc/hosts &2>>"${TMP}/log"
 
