@@ -1,0 +1,15 @@
+## 1980-01-01 ##
+#=-> -------------------------------------- <-=#
+::1 localhost
+::1 ip6-loopback
+::1 ip6-localhost
+0.0.0.0 local
+0.0.0.0 localhost
+0.0.0.0 localhost.localdomain
+ff00::0 ip6-localnet
+ff02::1 ip6-allnodes
+ff02::3 ip6-allhosts
+fe80::1%lo0 localhost
+ff02::2 ip6-allrouters
+ff00::0 ip6-mcastprefix
+255.255.255.255 broadcasthost
